@@ -1,6 +1,6 @@
 import numpy as np
 from numpy import array
-from scipy import misc
+# from scipy import misc
 from PIL import Image
 import pymp
 import datetime
