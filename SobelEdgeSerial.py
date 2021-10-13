@@ -68,7 +68,7 @@ for i in range(0, l):
 
 
 img = Image.fromarray(res2)
-img.save('my.png')
+img.save('SEDS.png')
 # img.show()
 
 b = datetime.datetime.now()

@@ -65,7 +65,7 @@ with pymp.Parallel(4) as p2:
 print("Breakpoint 4")
 
 img = Image.fromarray(res)
-img.save('my.png')
+img.save('GBP.png')
 img.show()
 b = datetime.datetime.now()
 print(b-a)

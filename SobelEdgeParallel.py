@@ -73,7 +73,7 @@ with pymp.Parallel(2) as p1:
 
 
 img = Image.fromarray(res2)
-img.save('my.png')
+img.save('SEDP.png')
 # img.show()
 
 b = datetime.datetime.now()

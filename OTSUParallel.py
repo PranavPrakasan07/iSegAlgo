@@ -76,7 +76,7 @@ def otsu_th():
                         image2[y][x] = MAX_BRIGHTNESS
                     else:
                         image2[y][x] = 0
-    print("hi")
+    print("End")
 
 
 a = datetime.datetime.now()
@@ -84,5 +84,5 @@ otsu_th()
 b = datetime.datetime.now()
 print("Time: "+str(b-a))
 img = Image.fromarray(image2)
-img.save('my.pgm')
+img.save('OTSUP.png')
 img.show()
