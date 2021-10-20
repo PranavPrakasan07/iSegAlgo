@@ -6,7 +6,6 @@ import pymp
 import datetime
 import imageio
 
-
 MAX_IMAGESIZE = 4000
 MAX_BRIGHTNESS = 255
 GRAYLEVEL = 256
@@ -16,7 +15,7 @@ MAX_BUFFERSIZE = 256
 face = imageio.imread('lion.pgm')
 pymp.config.nested = True
 image1 = face
-# image2=face
+image2=face
 print(face.shape)
 y_size1 = face.shape[0]
 x_size1 = face.shape[1]
@@ -85,4 +84,4 @@ b = datetime.datetime.now()
 print("Time: "+str(b-a))
 img = Image.fromarray(image2)
 img.save('OTSUP.png')
-img.show()
+# img.show()

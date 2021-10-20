@@ -17,7 +17,7 @@ convx = array([[-1, 0, 1],
 
 l = face.shape[0]
 b = face.shape[1]
-#padded = np.zeros((l+2,b+2))
+padded = np.zeros((l+2,b+2))
 
 padded = pymp.shared.array((l+2, b+2), dtype='uint8')
 i = None

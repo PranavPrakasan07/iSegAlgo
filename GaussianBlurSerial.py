@@ -36,6 +36,6 @@ for i in range(1, l+1):
 
 img = Image.fromarray(res)
 img.save('GBS.png')
-img.show()
+# img.show()
 b = datetime.datetime.now()
 print(b-a)
