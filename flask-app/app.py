@@ -2,6 +2,8 @@ from flask import Flask, render_template, redirect, flash, request, url_for
 from werkzeug.utils import secure_filename
 import urllib.request
 import os
+from PIL import Image, ImageOps
+
 from algorithms import sample
 
 app = Flask(__name__)
@@ -16,8 +18,12 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif','pgm'])
  
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-     
- 
+
+def convert_to_pmg(filename):
+    img = Image.open(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    gray_image = ImageOps.grayscale(img)
+    gray_image.save(os.path.join(app.config['UPLOAD_FOLDER'], "gscale.pgm"))
+
 @app.route('/')
 def home():
     return render_template('home.html')
@@ -35,6 +41,7 @@ def upload_image():
         filename = secure_filename(file.filename)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         flash('Image successfully uploaded')
+        convert_to_pmg(filename)
  
         t_gb_s = sample.hello() #execute the function GB serial
         t_gb_p = sample.hello() #execute the function GB parallel
@@ -49,8 +56,8 @@ def upload_image():
         otsus = ["OTSUS.png", t_otsu_s]
         otsup = ["OTSUP.png", t_otsu_p]
 
-        seds = ["SEDS.png", t_sobel_s]
-        sedp = ["SEDP.png", t_sobel_p]
+        seds = ["SOBELS.png", t_sobel_s]
+        sedp = ["SOBELP.png", t_sobel_p]
 
         return render_template('home.html', gbs = gbs, gbp = gbp, otsus = otsus, otsup = otsup, seds = seds, sedp = sedp)
     else:
