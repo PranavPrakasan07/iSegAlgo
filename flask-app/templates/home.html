@@ -1,0 +1,106 @@
+<html>
+    <head>
+        <title>Python Flask Upload and display image</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    </head>
+    <body>
+        <p><h1 align="center">Upload Image</h1></p>
+        <div class="container">
+            <div class="row">
+                <h2>Select a file to upload</h2>
+                <p>
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    <ul>
+                        {% for message in messages %}
+                        <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {% endwith %}
+                </p>
+                <form method="post" action="/" enctype="multipart/form-data">
+                    <dl>
+                        <p>
+                            <input type="file" name="file" class="form-control" autocomplete="off" required>
+                        </p>
+                    </dl>
+                    <p>
+                        <input type="submit" value="Submit" class="btn btn-info">
+                    </p>
+                </form>
+            </div>
+            <div>
+                <div>
+                    <h3>Gaussian Blur</h3>
+                    {% if gbs %}
+                        <div>
+                            <figure>
+                                <img height = 250 width = auto src="{{ url_for('display_image', filename=gbs[0])}}">
+                                <figcaption>Serial Gaussian Blur (RunTime = "{{gbs[1]}}")</figcaption>
+                            </figure>
+                        </div>
+                        <br>
+                    {% endif %}
+                    {% if gbs %}
+                        <div>
+                            <figure>
+                                <img height = 250 width = auto src="{{ url_for('display_image', filename=gbp[0])}}">
+                                <figcaption>Parallel Gaussian Blur (RunTime = "{{gbp[1]}}")</figcaption>
+                            </figure>
+                        </div>
+                    {% endif %}
+
+                    {% if gbs %}
+                        {% if gbp %}
+                        {% endif %}
+                    {% endif %}
+                    
+                    
+                </div>
+
+                <div>
+                    <h3>OTSU Thresholding</h3>
+                    {% if otsus %}
+                        <div>
+                            <figure>
+                                <img height = 250 width = auto src="{{ url_for('display_image', filename=otsus[0])}}">
+                                <figcaption>Serial OTSU (RunTime = "{{otsus[1]}}")</figcaption>
+                            </figure>
+                        </div>
+                        <br>
+                    {% endif %}
+                    {% if otsup %}
+                        <div>
+                            <figure>
+                                <img height = 250 width = auto src="{{ url_for('display_image', filename=otsup[0])}}">
+                                <figcaption>Parallel OTSU (RunTime = "{{otsup[1]}}")</figcaption>
+                            </figure>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <h3>Sobel Edge Detection</h3>
+                    {% if seds %}
+                        <div>
+                            <figure>
+                                <img height = 250 width = auto src="{{ url_for('display_image', filename=seds[0])}}">
+                                <figcaption>Serial Sobel Edge Detection (RunTime = "{{seds[1]}}")</figcaption>
+                            </figure>
+                        </div>
+                        <br>
+                    {% endif %}
+                    {% if sedp %}
+                        <div>
+                            <figure>
+                                <img height = 250 width = auto src="{{ url_for('display_image', filename=sedp[0])}}">
+                                <figcaption>Parallel Sobel Edge Detection (RunTime = "{{sedp[1]}}")</figcaption>
+                            </figure>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+</html>
