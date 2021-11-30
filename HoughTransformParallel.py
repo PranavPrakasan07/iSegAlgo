@@ -74,7 +74,7 @@ def main():
         cv2.line(img, points[0], points[1], [100])
 
     img = Image.fromarray(img)
-    img.save('HT.png')
+    img.save('HTP.png')
 
     b = datetime.datetime.now()
     print(b-a)
