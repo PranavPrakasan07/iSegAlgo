@@ -1,14 +1,10 @@
 import numpy as np
 from numpy import array
-from scipy import misc
 from PIL import Image
-import pymp
 import datetime
-import math
 import imageio
 
 a = datetime.datetime.now()
-pymp.config.nested = True
 face = imageio.imread('lion.pgm')
 
 print(face.shape)
@@ -16,10 +12,12 @@ print(face.shape)
 convx = array([[-1, 0, 1],
                [-2, 0, 2],
                [-1, 0, 1]])
+
 l = face.shape[0]
 b = face.shape[1]
-#padded = np.zeros((l+2,b+2))
-padded = pymp.shared.array((l+2, b+2), dtype='uint8')
+
+padded = np.zeros((l+2,b+2)).astype(np.uint8)
+
 i = None
 j = None
 
@@ -27,8 +25,8 @@ for i in range(0, l):
     for j in range(0, b):
         padded[i+1][j+1] = face[i][j]
 
+res = np.zeros((l,b)).astype(np.uint8)
 
-res = pymp.shared.array((l, b), dtype='uint8')
 i = None
 j = None
 
@@ -40,8 +38,8 @@ for i in range(1, l+1):
 
         res[i-1][j-1] = (res[i-1][j-1]**2)
 
+resy = np.zeros((l+2,b+2)).astype(np.uint8)
 
-resy = pymp.shared.array((l, b), dtype='uint8')
 i = None
 j = None
 convy = [[1, 2, 1],
@@ -57,8 +55,7 @@ for i in range(1, l+1):
 
         resy[i-1][j-1] = (resy[i-1][j-1]**2)
 
-
-res2 = pymp.shared.array((l, b), dtype='uint8')
+res2 = np.zeros((l,b)).astype(np.uint8)
 
 for i in range(0, l):
     for j in range(0, b):
@@ -67,7 +64,7 @@ for i in range(0, l):
             res2[i][j] = 255
 
 
-img = Image.fromarray(res2)
+img = Image.fromarray(res2.astype(np.uint8))
 img.save('SEDS.png')
 # img.show()
 

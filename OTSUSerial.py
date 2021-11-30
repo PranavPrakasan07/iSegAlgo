@@ -1,6 +1,3 @@
-import numpy as np
-from numpy import array
-from scipy import misc
 from PIL import Image
 import datetime
 import imageio

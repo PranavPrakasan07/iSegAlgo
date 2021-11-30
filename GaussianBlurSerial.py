@@ -1,13 +1,10 @@
 import numpy as np
 from numpy import array
-from scipy import misc
 from PIL import Image
-import pymp
 import datetime
 import imageio
 
 a = datetime.datetime.now()
-# pymp.config.nested = True
 face = imageio.imread('lion.pgm')
 
 print(face.shape)
@@ -36,6 +33,5 @@ for i in range(1, l+1):
 
 img = Image.fromarray(res)
 img.save('GBS.png')
-# img.show()
 b = datetime.datetime.now()
 print(b-a)
