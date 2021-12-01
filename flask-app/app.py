@@ -68,21 +68,21 @@ def process_upload():
     t_gb_s = GaussianBlurSerial()
     t_otsu_s = OtsuSerial()
     t_sobel_s = SobelSerial()
-    # t_gb_p = GaussianBlurParallel()
-    # t_otsu_p = OtsuParallel()
-    # t_sobel_p = SobelParallel()
+    t_gb_p = GaussianBlurParallel()
+    t_otsu_p = OtsuParallel()
+    t_sobel_p = SobelParallel()
     t_hough = HoughCircles()
     
     gbs = ["GBS.png", t_gb_s]
     otsus = ["OTSUS.png", t_otsu_s]
     seds = ["SEDS.png", t_sobel_s]
-    # gbp = ["GBP.png", t_gb_p]
-    # otsup = ["OTSUP.png", t_otsu_p]
-    # sedp = ["SEDP.png", t_sobel_p]
+    gbp = ["GBP.png", t_gb_p]
+    otsup = ["OTSUP.png", t_otsu_p]
+    sedp = ["SEDP.png", t_sobel_p]
     hough = ["HTC.png", t_hough]
 
-    # return render_template('home.html', gbs = gbs, otsus = otsus, seds = seds, gbp = gbp, otsup = otsup, sedp = sedp)
-    return render_template('home.html', gbs = gbs, otsus = otsus, seds = seds, hough = hough)
+    return render_template('home.html', gbs = gbs, otsus = otsus, seds = seds, gbp = gbp, otsup = otsup, sedp = sedp, hough = hough)
+    #return render_template('home.html', gbs = gbs, otsus = otsus, seds = seds, hough = hough)
 
 @app.route('/display/<filename>')
 def display_image(filename):
