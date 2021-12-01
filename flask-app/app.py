@@ -73,6 +73,14 @@ def process_upload():
     t_sobel_p = SobelParallel()
     t_hough = HoughCircles()
     
+    percent_change = []
+    percent_change.append(float((t_gb_s-t_gb_p)/t_gb_s) * 100)
+    percent_change.append(float((t_otsu_s-t_otsu_p)/t_otsu_s) * 100)
+    percent_change.append(float((t_sobel_s-t_sobel_p)/t_sobel_s) * 100)
+    percent_change.append(float((0.010648)/t_hough) * 100)
+    
+    percent_change = list(map(lambda x: round(x,5), percent_change))
+    
     gbs = ["GBS.png", t_gb_s]
     otsus = ["OTSUS.png", t_otsu_s]
     seds = ["SEDS.png", t_sobel_s]
@@ -81,7 +89,7 @@ def process_upload():
     sedp = ["SEDP.png", t_sobel_p]
     hough = ["HTC.png", t_hough]
 
-    return render_template('home.html', gbs = gbs, otsus = otsus, seds = seds, gbp = gbp, otsup = otsup, sedp = sedp, hough = hough)
+    return render_template('home.html', gbs = gbs, otsus = otsus, seds = seds, gbp = gbp, otsup = otsup, sedp = sedp, hough = hough, change = percent_change)
     # return render_template('home.html', gbs = gbs, otsus = otsus, seds = seds, hough = hough)
 
 @app.route('/display/<filename>')
