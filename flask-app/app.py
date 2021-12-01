@@ -82,7 +82,7 @@ def process_upload():
     hough = ["HTC.png", t_hough]
 
     return render_template('home.html', gbs = gbs, otsus = otsus, seds = seds, gbp = gbp, otsup = otsup, sedp = sedp, hough = hough)
-    #return render_template('home.html', gbs = gbs, otsus = otsus, seds = seds, hough = hough)
+    # return render_template('home.html', gbs = gbs, otsus = otsus, seds = seds, hough = hough)
 
 @app.route('/display/<filename>')
 def display_image(filename):
@@ -468,12 +468,15 @@ def SobelParallel():
 def HoughCircles():
     a = datetime.datetime.now()
     img = cv2.imread('image.png',0)
-    img = cv2.medianBlur(img,5)
-    cimg = cv2.cvtColor(img,cv2.COLOR_GRAY2BGR)
-    circles = cv2.HoughCircles(img,cv2.HOUGH_GRADIENT,1,20,param1=50,param2=30,minRadius=0,maxRadius=200)
-    circles = np.uint16(np.around(circles))
-    for i in circles[0,:]:
-        cv2.circle(cimg,(i[0],i[1]),i[2],(0,255,0),2)
-    cv2.imwrite("./static/result/HTC.png", cimg)
+    try:
+        img = cv2.medianBlur(img,5)
+        cimg = cv2.cvtColor(img,cv2.COLOR_GRAY2BGR)
+        circles = cv2.HoughCircles(img,cv2.HOUGH_GRADIENT,1,20,param1=50,param2=30,minRadius=20,maxRadius=30)
+        circles = np.uint16(np.around(circles))
+        for i in circles[0,:]:
+            cv2.circle(cimg,(i[0],i[1]),i[2],(0,255,0),2)
+        cv2.imwrite("./static/result/HTC.png", cimg)
+    except:
+        cv2.imwrite("./static/result/HTC.png", img)
     b = datetime.datetime.now()
     return (b-a).total_seconds()
