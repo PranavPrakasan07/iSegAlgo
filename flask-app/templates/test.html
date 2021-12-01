@@ -11,9 +11,6 @@
     <meta http-equiv='expires' content='0'>
     <meta http-equiv='pragma' content='no-cache'>
     <style>
-        img{
-            max-width: 400px;
-        }
         .intro {
             background: #7337b8;
             width: 100vw !important;
@@ -158,14 +155,21 @@
                 </div>
                 <div class="col-3">
                     <h3>Houghman Transform</h3>
-                    {% if hough %}
+                    {% if seds %}
                     <div>
                         <figure>
-                            <img height=250 width=auto src="{{ url_for('display_image', filename=hough[0])}}">
-                            <figcaption>(RunTime = "{{hough[1]}}")</figcaption>
+                            <img height=250 width=auto src="{{ url_for('display_image', filename=seds[0])}}">
+                            <figcaption>Serial Sobel Edge Detection (RunTime = "{{seds[1]}}")</figcaption>
                         </figure>
                     </div>
-                    <br> {% endif %}
+                    <br> {% endif %} {% if sedp %}
+                    <div>
+                        <figure>
+                            <img height=250 width=auto src="{{ url_for('display_image', filename=sedp[0])}}">
+                            <figcaption>Parallel Sobel Edge Detection (RunTime = "{{sedp[1]}}")</figcaption>
+                        </figure>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </section>
