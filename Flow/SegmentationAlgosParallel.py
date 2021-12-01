@@ -19,6 +19,9 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as plt_patches
 from scipy.signal import fftconvolve
 from scipy.ndimage import filters
+import pymp
+
+pymp.config.nested = True
 
 _MIN_RADIUS = 15
 _MAX_RADIUS = 75
@@ -70,9 +73,11 @@ def otsu_th():
     
     print("Otsu's binarization process starts now.\n")
     # /* Histogram generation */
-    for y in range(0, y_size1):
-        for x in range(0, x_size1):
-            hist[image1[y][x]] += 1
+    with pymp.Parallel(2) as p1:
+        with pymp.Parallel(2) as p2:
+            for y in p1.range(0, y_size1):
+                for x in p2.range(0, x_size1):
+                    hist[image1[y][x]] += 1
 
     # /* calculation of probability density */
     for i in range(0, GRAYLEVEL):
@@ -106,12 +111,14 @@ def otsu_th():
     # /* binarization output into image2 */
     x_size2 = x_size1
     y_size2 = y_size1
-    for y in range(0, y_size2):
-        for x in range(0, x_size2):
-            if (image1[y][x] > threshold):
-                image2[y][x] = MAX_BRIGHTNESS
-            else:
-                image2[y][x] = 0
+    with pymp.Parallel(2) as p1:
+        with pymp.Parallel(2) as p2:
+            for y in p1.range(0, y_size2):
+                for x in p2.range(0, x_size2):
+                    if (image1[y][x] > threshold):
+                        image2[y][x] = MAX_BRIGHTNESS
+                    else:
+                        image2[y][x] = 0
     print("End")
 
     return image2
@@ -136,25 +143,29 @@ def gaussianBlur():
     l = face.shape[0]
     b = face.shape[1]
     padded = np.zeros((l+2, b+2))
-    for i in range(0, l):
-        for j in range(0, b):
-            padded[i+1][j+1] = face[i][j]
+    with pymp.Parallel(2) as p1:
+        with pymp.Parallel(2) as p2:
+            for i in p1.range(0, l):
+                for j in p2.range(0, b):
+                    padded[i+1][j+1] = face[i][j]
 
 
     res = np.zeros((l, b), dtype='uint8')
     i = None
     j = None
 
-    for i in range(1, l+1):
-        for j in range(1, b+1):
-            res[i-1][j-1] = (convx[0][0]*padded[i-1][j-1] + convx[0][1]*padded[i-1][j]+convx[0][2]*padded[i-1][j+1] +
-                            convx[1][0]*padded[i][j-1]+convx[1][1]*padded[i][j] + convx[1][2]*padded[i][j+1] +
-                            convx[2][0]*padded[i+1][j-1] + convx[2][1]*padded[i+1][j] + convx[2][2]*padded[i+1][j+1])
+    with pymp.Parallel(2) as p1:
+        with pymp.Parallel(2) as p2:
+            for i in p1.range(1, l+1):
+                for j in p2.range(1, b+1):
+                    res[i-1][j-1] = (convx[0][0]*padded[i-1][j-1] + convx[0][1]*padded[i-1][j]+convx[0][2]*padded[i-1][j+1] +
+                                    convx[1][0]*padded[i][j-1]+convx[1][1]*padded[i][j] + convx[1][2]*padded[i][j+1] +
+                                    convx[2][0]*padded[i+1][j-1] + convx[2][1]*padded[i+1][j] + convx[2][2]*padded[i+1][j+1])
 
 
     img = Image.fromarray(res)
     img.save('Flow/output1.pgm')
-    img.save('Flow/output1.png')
+    img.save('Flow/output1.png') 
 
     b = datetime.datetime.now()
     print(b-a)
@@ -198,13 +209,15 @@ def sobelEdge():
     i = None
     j = None
 
-    for i in range(1, l+1):
-        for j in range(1, b+1):
-            res[i-1][j-1] = (convx[0][0]*padded[i-1][j-1] + convx[0][1]*padded[i-1][j]+convx[0][2]*padded[i-1][j+1] +
-                            convx[1][0]*padded[i][j-1]+convx[1][1]*padded[i][j] + convx[1][2]*padded[i][j+1] +
-                            convx[2][0]*padded[i+1][j-1] + convx[2][1]*padded[i+1][j] + convx[2][2]*padded[i+1][j+1])
+    with pymp.Parallel(2) as p1:
+        with pymp.Parallel(2) as p2:
+            for i in p1.range(1, l+1):
+                for j in p2.range(1, b+1):
+                    res[i-1][j-1] = (convx[0][0]*padded[i-1][j-1] + convx[0][1]*padded[i-1][j]+convx[0][2]*padded[i-1][j+1] +
+                                    convx[1][0]*padded[i][j-1]+convx[1][1]*padded[i][j] + convx[1][2]*padded[i][j+1] +
+                                    convx[2][0]*padded[i+1][j-1] + convx[2][1]*padded[i+1][j] + convx[2][2]*padded[i+1][j+1])
 
-            res[i-1][j-1] = (res[i-1][j-1]**2)
+                    res[i-1][j-1] = (res[i-1][j-1]**2)
 
     resy = np.zeros((l+2,b+2)).astype(np.uint8)
 
@@ -215,21 +228,25 @@ def sobelEdge():
             [-1, -2, -1]
             ]
 
-    for i in range(1, l+1):
-        for j in range(1, b+1):
-            resy[i-1][j-1] = (convy[0][0]*padded[i-1][j-1] + convy[0][1]*padded[i-1][j]+convy[0][2]*padded[i-1][j+1] +
-                            convy[1][0]*padded[i][j-1]+convy[1][1]*padded[i][j] + convy[1][2]*padded[i][j+1] +
-                            convy[2][0]*padded[i+1][j-1] + convy[2][1]*padded[i+1][j] + convy[2][2]*padded[i+1][j+1])
+    with pymp.Parallel(2) as p1:
+        with pymp.Parallel(2) as p2:
+            for i in p1.range(1, l+1):
+                for j in p2.range(1, b+1):
+                    resy[i-1][j-1] = (convy[0][0]*padded[i-1][j-1] + convy[0][1]*padded[i-1][j]+convy[0][2]*padded[i-1][j+1] +
+                                    convy[1][0]*padded[i][j-1]+convy[1][1]*padded[i][j] + convy[1][2]*padded[i][j+1] +
+                                    convy[2][0]*padded[i+1][j-1] + convy[2][1]*padded[i+1][j] + convy[2][2]*padded[i+1][j+1])
 
-            resy[i-1][j-1] = (resy[i-1][j-1]**2)
+                    resy[i-1][j-1] = (resy[i-1][j-1]**2)
 
     res2 = np.zeros((l,b)).astype(np.uint8)
 
-    for i in range(0, l):
-        for j in range(0, b):
-            res2[i][j] = int((res[i-1][j-1]+int(resy[i-1][j-1])))
-            if res2[i][j] > 15:
-                res2[i][j] = 255
+    with pymp.Parallel(2) as p1:
+        with pymp.Parallel(2) as p2:
+            for i in p1.range(0, l):
+                for j in p2.range(0, b):
+                    res2[i][j] = int((res[i-1][j-1]+int(resy[i-1][j-1])))
+                    if res2[i][j] > 15:
+                        res2[i][j] = 255
 
 
     img = Image.fromarray(res2.astype(np.uint8))
@@ -357,6 +374,8 @@ def _topNCircles(acc, radii, n):
     maxima = []
     max_positions = []
     max_signal = 0
+    circle_x = circle_y = radius = 0
+
     for i, r in enumerate(radii):
         max_positions.append(np.unravel_index(acc[i].argmax(), acc[i].shape))
         maxima.append(acc[i].max())
