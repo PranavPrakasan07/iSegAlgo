@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>Python Flask Upload and display image</title>
+    <title>Python Flaske</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <meta http-equiv='cache-control' content='no-cache'>
@@ -37,6 +37,11 @@
                     <input type="submit" value="Submit" class="btn btn-info">
                 </p>
             </form>
+            {% if enable %}
+                <form method="get" enctype="multipart/form-data" name = "process" class = "process" action="/process">
+                    <input type = "submit" value="Process">
+                </form>
+            {% endif %}
         </div>
         <div>
             <div>
@@ -50,7 +55,8 @@
                 </div>
                 <br>
                 {% endif %}
-                {% if gbs %}
+                
+                {% if gbp %}
                 <div>
                     <figure>
                         <img height=250 width=auto src="{{ url_for('display_image', filename=gbp[0])}}">
