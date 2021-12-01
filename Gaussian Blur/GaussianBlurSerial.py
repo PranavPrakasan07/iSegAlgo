@@ -3,9 +3,39 @@ from numpy import array
 from PIL import Image
 import datetime
 import imageio
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
 
+def rgb_to_gray(img):
+    grayImage = np.zeros(img.shape)
+    R = np.array(img[:, :, 0])
+    G = np.array(img[:, :, 1])
+    B = np.array(img[:, :, 2])
+
+    R = (R *.299)
+    G = (G *.587)
+    B = (B *.114)
+
+    Avg = (R+G+B)
+    grayImage = img.copy()
+
+    for i in range(3):
+        grayImage[:,:,i] = Avg
+        
+    return grayImage  
+    
 a = datetime.datetime.now()
 face = imageio.imread('lion.pgm')
+
+# image = mpimg.imread('lion.png')   
+# face = rgb_to_gray(image)  
+
+# face = Image.open('lion.png')
+# face = face.convert('L')
+# print("TYPE imgray: ", type(face), face)
+
+# print("TYPE face: ", type(face), face)
 
 print(face.shape)
 
@@ -35,3 +65,11 @@ img = Image.fromarray(res)
 img.save('GBS.png')
 b = datetime.datetime.now()
 print(b-a)
+
+# print("TYPE img: ", type(img), img)
+
+# img = Image.open('lion.png')
+# imgGray = img.convert('L')
+# print("TYPE imgray: ", type(imgGray), imgGray)
+
+# print("TYPE res: ", type(res), res)

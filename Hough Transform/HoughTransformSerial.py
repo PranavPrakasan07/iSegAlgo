@@ -59,7 +59,7 @@ def line_intersection(p, theta, img):
 def main():
     a = datetime.datetime.now()
 
-    original_img_path = "lion.pgm"
+    original_img_path = "cans.png"
     img = cv2.imread(original_img_path, 0)
     lines = Hough_lines(img)
     print("lines:", lines)
