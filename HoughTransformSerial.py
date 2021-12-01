@@ -9,7 +9,7 @@ def Hough_lines(img):
 
     height, width = img.shape[:2]
     accumulator = np.zeros(
-        (180, int(math.sqrt(height ** 2 + width ** 2))), dtype=np.int)
+        (180, int(math.sqrt(height ** 2 + width ** 2))), dtype=int)
 
     lines = np.array([[0, 0], [0, 0]])
 
@@ -59,7 +59,7 @@ def line_intersection(p, theta, img):
 def main():
     a = datetime.datetime.now()
 
-    original_img_path = "lion.png"
+    original_img_path = "lion.pgm"
     img = cv2.imread(original_img_path, 0)
     lines = Hough_lines(img)
     print("lines:", lines)
@@ -77,3 +77,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+
