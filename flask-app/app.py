@@ -69,7 +69,7 @@ def process_upload():
     t_sobel_s = SobelSerial()
     t_gb_p = GaussianBlurParallel()
     t_otsu_p = OtsuParallel()
-    t_sobel_p = obelParallel()    
+    t_sobel_p = SobelParallel()
 
     gbs = ["GBS.png", t_gb_s]
     otsus = ["OTSUS.png", t_otsu_s]
