@@ -13,6 +13,7 @@ import datetime
 import imageio
 from scipy import misc
 import math
+import cv2
 
 
 app = Flask(__name__)
@@ -34,7 +35,7 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def convert_to_pmg(filename):
-    img = Image.open(os.path.join("./", filename))
+    img = Image.open(os.path.join("./", "image.png"))
     gray_image = ImageOps.grayscale(img)
     gray_image.save(os.path.join("./", "gscale.pgm"))
 
@@ -53,7 +54,7 @@ def upload_image():
         return redirect(request.url)
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
-        file.save(os.path.join("./", filename))
+        file.save(os.path.join("./", "image.png"))
         flash('Image successfully uploaded')
         convert_to_pmg(filename)
         return render_template('home.html', enable = True)
@@ -67,33 +68,21 @@ def process_upload():
     t_gb_s = GaussianBlurSerial()
     t_otsu_s = OtsuSerial()
     t_sobel_s = SobelSerial()
-    t_gb_p = GaussianBlurParallel()
-    t_otsu_p = OtsuParallel()
-    t_sobel_p = SobelParallel()
-
+    # t_gb_p = GaussianBlurParallel()
+    # t_otsu_p = OtsuParallel()
+    # t_sobel_p = SobelParallel()
+    t_hough = HoughCircles()
+    
     gbs = ["GBS.png", t_gb_s]
     otsus = ["OTSUS.png", t_otsu_s]
     seds = ["SEDS.png", t_sobel_s]
-    gbp = ["GBP.png", t_gb_p]
-    otsup = ["OTSUP.png", t_otsu_p]
-    sedp = ["SEDP.png", t_sobel_p]
-
-    return render_template('home.html', gbs = gbs, otsus = otsus, seds = seds, gbp = gbp, otsup = otsup, sedp = sedp)
-
-    
-    # t_gb_s = sample.hello()  # execute the function GB serial
-    # t_gb_p = sample.hello()  # execute the function GB parallel
-    # t_otsu_s = sample.hello()  # execute the function OTSU serial
-    # t_otsu_p = sample.hello()  # execute the function OTSU parallel
-    # t_sobel_s = sample.hello()  # execute the function SOBEL serial
-    # t_sobel_p = sample.hello()  # execute the function SOBEL parallel
-    # gbs = ["GBS.png", t_gb_s]
     # gbp = ["GBP.png", t_gb_p]
-    # otsus = ["OTSUS.png", t_otsu_s]
     # otsup = ["OTSUP.png", t_otsu_p]
-    # seds = ["SOBELS.png", t_sobel_s]
-    # sedp = ["SOBELP.png", t_sobel_p]
-    # return render_template('home.html', gbs=gbs, gbp=gbp, otsus=otsus, otsup=otsup, seds=seds, sedp=sedp)
+    # sedp = ["SEDP.png", t_sobel_p]
+    hough = ["HTC.png", t_hough]
+
+    # return render_template('home.html', gbs = gbs, otsus = otsus, seds = seds, gbp = gbp, otsup = otsup, sedp = sedp)
+    return render_template('home.html', gbs = gbs, otsus = otsus, seds = seds, hough = hough)
 
 @app.route('/display/<filename>')
 def display_image(filename):
@@ -326,14 +315,6 @@ def GaussianBlurParallel():
     b = datetime.datetime.now()
     return (b-a).total_seconds()
 
-import numpy as np
-from numpy import array
-from scipy import misc
-from PIL import Image
-import pymp
-import datetime
-import imageio
-
 def OtsuParallel():
     MAX_IMAGESIZE = 4000
     MAX_BRIGHTNESS = 255
@@ -481,5 +462,18 @@ def SobelParallel():
     
     img = Image.fromarray(res2.astype(np.uint8))
     img.save('./static/result/SEDP.png')
+    b = datetime.datetime.now()
+    return (b-a).total_seconds()
+
+def HoughCircles():
+    a = datetime.datetime.now()
+    img = cv2.imread('image.png',0)
+    img = cv2.medianBlur(img,5)
+    cimg = cv2.cvtColor(img,cv2.COLOR_GRAY2BGR)
+    circles = cv2.HoughCircles(img,cv2.HOUGH_GRADIENT,1,20,param1=50,param2=30,minRadius=0,maxRadius=200)
+    circles = np.uint16(np.around(circles))
+    for i in circles[0,:]:
+        cv2.circle(cimg,(i[0],i[1]),i[2],(0,255,0),2)
+    cv2.imwrite("./static/result/HTC.png", cimg)
     b = datetime.datetime.now()
     return (b-a).total_seconds()

@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>Python Flaske</title>
+    <title>Python Flask</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <meta http-equiv='cache-control' content='no-cache'>
@@ -110,6 +110,18 @@
                     <figure>
                         <img height=250 width=auto src="{{ url_for('display_image', filename=sedp[0])}}">
                         <figcaption>Parallel Sobel Edge Detection (RunTime = "{{sedp[1]}}")</figcaption>
+                    </figure>
+                </div>
+                {% endif %}
+            </div>
+
+            <div>
+                <h3>Hough Circles</h3>
+                {% if hough %}
+                <div>
+                    <figure>
+                        <img height=250 width=auto src="{{ url_for('display_image', filename=hough[0])}}">
+                        <figcaption>Hough Circles (RunTime = "{{hough[1]}}")</figcaption>
                     </figure>
                 </div>
                 {% endif %}
