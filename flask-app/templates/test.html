@@ -11,9 +11,6 @@
     <meta http-equiv='expires' content='0'>
     <meta http-equiv='pragma' content='no-cache'>
     <style>
-        img{
-            max-width: 400px;
-        }
         .intro {
             background: #7337b8;
             width: 100vw !important;
@@ -108,7 +105,7 @@
                             <figcaption>Serial Gaussian Blur (RunTime = "{{gbs[1]}}")</figcaption>
                         </figure>
                     </div>
-                    <br> {% endif %} {% if gbp %}
+                    <br> {% endif %} {% if gbs %}
                     <div>
                         <figure>
                             <img height=250 width=auto src="{{ url_for('display_image', filename=gbp[0])}}">
@@ -116,9 +113,6 @@
                         </figure>
                     </div>
                     {% endif %}
-                    <div>
-                    	<h5>Percentage change is: {{change[0]}} %</h5>
-                    </div>
                 </div>
 
                 <div class="col-3">
@@ -139,9 +133,6 @@
                         </figure>
                     </div>
                     {% endif %}
-                    <div>
-                    	<h5>Percentage change is: {{change[1]}} %</h5>
-                    </div>
                 </div>
 
                 <div class="col-3">
@@ -161,31 +152,24 @@
                         </figure>
                     </div>
                     {% endif %}
-                    <div>
-                    	<h5>Percentage change is: {{change[2]}} %</h5>
-                    </div>
                 </div>
                 <div class="col-3">
                     <h3>Houghman Transform</h3>
-                    {% if hough %}
+                    {% if seds %}
                     <div>
                         <figure>
-                            <img height=250 width=auto src="{{ url_for('display_image', filename=hough[0])}}">
-                            <figcaption>Houghman Serial Transform (RunTime = "{{hough[1] + 0.023 }}")</figcaption>
+                            <img height=250 width=auto src="{{ url_for('display_image', filename=seds[0])}}">
+                            <figcaption>Serial Sobel Edge Detection (RunTime = "{{seds[1]}}")</figcaption>
                         </figure>
                     </div>
-                    <br> {% endif %}
-                    {% if hough %}
+                    <br> {% endif %} {% if sedp %}
                     <div>
                         <figure>
-                            <img height=250 width=auto src="{{ url_for('display_image', filename=hough[0])}}">
-                            <figcaption>Houghman Parallel Transform (RunTime = "{{hough[1] + 0.012352}}")</figcaption>
+                            <img height=250 width=auto src="{{ url_for('display_image', filename=sedp[0])}}">
+                            <figcaption>Parallel Sobel Edge Detection (RunTime = "{{sedp[1]}}")</figcaption>
                         </figure>
                     </div>
                     {% endif %}
-                    <div>
-                    	<h5>Percentage change is: {{change[3]}} %</h5>
-                    </div>
                 </div>
             </div>
         </section>
